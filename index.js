@@ -1,6 +1,8 @@
 import express from "express";
 import mongoose from "mongoose"
 import { connectDB } from "./config/db.js";
+import categoryRoutes from './routes/categoryRoutes.js'
+import blogRoutes from './routes/blogRoutes.js'
 import { Category } from "./model/category.js";
 import cors from "cors"
 
@@ -50,54 +52,15 @@ app.get('/product/:id',(req,res)=>{
 })
 
 
-app.post("/category/create",async(req,res)=> {
-  console.log(req.body)
-  const title = req.body.title
-  console.log(title,"thisis title")
-
-  const existingTitle = await Category.find({title})
-  console.log(existingTitle,"existing")
-
-  if(existingTitle.length >0){
-    return res.status(400).json("title already exist")
-  }
-
-  
-  const category = await Category.create(req.body)
-  res.json(category)
-})
-
-app.get("/category/getAll",async(req,res)=> {
-  const category = await Category.find()
-  res.json(category)
-})
-
-
-app.get("/category/:id",async(req,res)=>{
-  
-  const category = await Category.findById(req.params.id)
-  res.json(category)
-})
-
-app.put("/category/update/:id",async(req,res)=>{
-   const existingTitle = await Category.find({title})
-  console.log(existingTitle,"existing")
-
-  if(existingTitle.length >0){
-    return res.status(400).json("title already exist")
-  }
-
-  const category = await Category.findByIdAndUpdate(req.params.id,req.body ,{new:true})
-  res.json(category)
-
-})
 
 
 
-app.delete("/category/delete/:id",async(req,res)=>{
-  const category = await Category.findByIdAndDelete(req.params.id)
-  res.json("Deleted Succesfully ")
-})
+
+app.use("/category",categoryRoutes)
+app.use("/blog",blogRoutes)
+
+
+
 
 
 app.listen(5000, () => {
