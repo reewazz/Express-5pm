@@ -3,6 +3,7 @@ import mongoose from "mongoose"
 import { connectDB } from "./config/db.js";
 import categoryRoutes from './routes/categoryRoutes.js'
 import blogRoutes from './routes/blogRoutes.js'
+import authRoutes from './routes/authRoutes.js'
 import { Category } from "./model/category.js";
 import cors from "cors"
 
@@ -58,6 +59,7 @@ app.get('/product/:id',(req,res)=>{
 
 app.use("/category",categoryRoutes)
 app.use("/blog",blogRoutes)
+app.use("/auth",authRoutes)
 
 
 
