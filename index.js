@@ -7,6 +7,9 @@ import authRoutes from './routes/authRoutes.js'
 import { Category } from "./model/category.js";
 import cors from "cors"
 import dotenv from "dotenv"
+import multer from "multer";
+import path from "path"
+import { upload } from "./middlewares/file.js";
 
 const app = express();
 
@@ -20,6 +23,23 @@ app.use(cors(
 app.use(express.json())
 
 connectDB()
+
+// app.use('/uploads', express.static(path.join(process.cwd(),'uploads')))
+app.use("/uploads", express.static(path.join(process.cwd(), "uploads")));
+
+
+
+
+
+app.post('/upload-image', upload.single('image'), function (req, res) {
+ try{
+  console.log("image from multer" , req.file)
+ res.json("hello")
+ }
+ catch(err){
+  console.log(err)
+ }
+})
 
 app.get("/", (req, res) => {
   res.send("Backend is running....");
